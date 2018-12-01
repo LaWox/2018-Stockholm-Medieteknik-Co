@@ -1,5 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    #startButton{
+        position: absolute;
+        top:20px;
+        left:100px; }
+
+    #circleAddButton{
+        position: absolute;
+        top:20px;
+        left:200px; }
+
+    #circleremoveButton{
+        position: absolute;
+        top:20px;
+        left:300px; }
+
+</style>
 <head>
     <meta charset="UTF-8">
     <title>Test</title>
@@ -8,20 +25,34 @@
 </head>
 <body>
 
+
+<button id="startButton" type="button" >Start</button>
+<button id="circleAddButton" type="button" >Add</button>
+<button id="circleRemoveButton" type="button" >Remove</button>
+
+<canvas id="canvas" width="1300" height="900">c</canvas>
+
 <script>
     (function(){
 
         function init(){
-            var canvas = document.getElementsByTagName('canvas')[0];
-            var c = canvas.getContext('2d');
+            var canvas = document.getElementById("canvas");
+            canvas.addEventListener("click", out, false);
+            console.log(canvas);
+            var c = canvas.getContext("2d");
             var cancelMe = "";
             var container = {x:100,y:100,width:1200,height:800};
-            var circles = [{x:400,y:400,r:50,color:25,vx:6,vy:10},
+            var circles = [];
+            for (var x=0; x<5;x++ ){
+                addCircle(null);
+            }
+
+            /*var circle = [{x:400,y:400,r:50,color:25,vx:6,vy:10},
                 {x:500,y:300,r:100,color:125,vx:2,vy:-8},
                 {x:800,y:350,r:25,color:285,vx:20,vy:-20},
                 {x:800,y:700,r:75,color:325,vx:13,vy:-8},
                 {x:400,y:500,r:120,color:175,vx:-4,vy:-6}
-            ];
+            ];*/
 
             c.fillRect(container.x,container.y,container.width,container.height);
 
@@ -70,12 +101,18 @@
                     color: 360*Math.random(),
                     vx:10*Math.random(),
                     vy:10*Math.random()
-                }
+                    //insideCircle: function (xmouse,ymouse) {
+                    //    if(abs(xmouse-x)<=r)
+                    //
+                   // }
+                };
 
                 circles.push(circle);
             }
 
-
+            function out(){
+                console.log("funkar hej");
+            }
             function removeCircle(){
                 circles.pop();
             }
@@ -88,6 +125,11 @@
 
             var circleRemoveButton = document.getElementById('circleRemoveButton');
             circleRemoveButton.addEventListener('click',removeCircle,false);
+        }
+
+        function popCircle(obj){
+            this.x=0, this.y=0;
+
         }
 
 //invoke function init once document is fully loaded
