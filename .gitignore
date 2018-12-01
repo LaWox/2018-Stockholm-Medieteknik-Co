@@ -1,4 +1,5 @@
 # JetBrains
+.idea/*
 *.workspace.xml
 *.tasks.xml
 
