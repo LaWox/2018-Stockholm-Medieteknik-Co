@@ -7,7 +7,8 @@ var circles = [{
     r: 100,
     vx: 1,
     vy: 1,
-    color: 125
+    color: 125,
+    lifeLength: 10
     },
     {
     x: 70,
@@ -15,7 +16,8 @@ var circles = [{
     r: 40,
     vx: 2,
     vy: 1.7,
-    color: 125
+    color: 125,
+    lifeLength: 9
     },
     {
     x: 270,
@@ -23,7 +25,8 @@ var circles = [{
     r: 70,
     vx: 1.6,
     vy: 1.8,
-    color: 125
+    color: 125,
+    lifeLength: 8
     }];
 
 (function() {
@@ -62,7 +65,8 @@ var circles = [{
         c.fillStyle = "#FFFFFF";
         c.fillRect(container.x, container.y, container.width, container.height);
 
-        //loop throughj the circles array
+        var lifeTime = 5
+        //loop through the circles array
         for (var i = 0; i < circles.length; i++) {
             //draw the circles
             c.fillStyle = 'hsl(' + circles[i].color++ + ', 100%, 50%)';
@@ -78,9 +82,36 @@ var circles = [{
             if (circles[i].y + circles[i].r + circles[i].vy > container.y + container.height || circles[i].y - circles[i].r + circles[i].vy < container.y) {
             circles[i].vy = -circles[i].vy;
             }
+            
+            //lets collide our balls dude
+
+            circles.forEach(circle => {
+                if (circles[i] !== circle) {
+                    //if ((circles[i].r - circle.r)**2 <= ((circles[i].x - circle.x)**2 + (circles[i].y - circle.y)**2) <= (circles[i].r + circle.r)**2)
+                    if (Math.abs(circles[i].r - circle.r) <= Math.sqrt((circles[i].x - circle.x)**2 + (circles[i].y - circle.y)**2) <= (circles[i].r + circle.r))
+                    {
+                        circle.vx = -circle.vx;
+                        circles[i].vx = -circles[i].vx
+                    }
+                }
+            });
+
 
             circles[i].x += circles[i].vx
             circles[i].y += circles[i].vy
+
+            //time to make the circles disappear over time ladies and gentlemen
+            circles[i].lifeLength -= 1 / 60
+
+
+            if (circles[i].lifeLength <= 0) {
+                circles[i].r = circles[i].r * (1 / 1.5);
+            }
+
+            if (circles[i].lifeLength <= -1) {
+                circles.splice(i, 1);
+            }
+
         }
 
         requestAnimationFrame(animate);
@@ -91,8 +122,8 @@ var circles = [{
 })();
 
 function isIntersect(point, circle) {
-    console.log(Math.sqrt((point.x-circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.r);
-    return Math.sqrt((point.x-circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.r;
+    console.log(Math.sqrt((point.x - circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.r);
+    return Math.sqrt((point.x - circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.r;
   }
   
   canvas.addEventListener('click', (e) => {
@@ -103,7 +134,7 @@ function isIntersect(point, circle) {
 
     circles.forEach(circle => {
       if (isIntersect(pos, circle)) {
-        circles.splice(circle, 1);
+          circles.splice(circles.indexOf(circle), 1);
       }
     });
   });
