@@ -88,11 +88,15 @@ var circles = [{
             circles.forEach(circle => {
                 if (circles[i] !== circle) {
                     
-                    //if ((circles[i].r - circle.r)**2 <= ((circles[i].x - circle.x)**2 + (circles[i].y - circle.y)**2) <= (circles[i].r + circle.r)**2)
-                    if (Math.abs(circles[i].r - circle.r) <= Math.sqrt((circles[i].x - circle.x)**2 + (circles[i].y - circle.y)**2) <= (circles[i].r + circle.r))
+                    if ((circles[i].r - circle.r)**2 <= ((circles[i].x - circle.x)**2 + (circles[i].y - circle.y)**2) <= (circles[i].r + circle.r)**2)
+                    //if (Math.abs(circles[i].r - circle.r) <= Math.sqrt((circles[i].x - circle.x)**2 + (circles[i].y - circle.y)**2) <= (circles[i].r + circle.r))
+                    //if (Math.sqrt((circles[i].x - circle.x)**2 + (circles[i].y - circle.y)**2) <= (circles[i].r + circle.r))
                     {
+                        console.log('funka');
                         circle.vx = -circle.vx;
                         circles[i].vx = -circles[i].vx
+                        circle.vy = -circle.vy;
+                        circles[i].vy = -circles[i].vy
                     }
                 }
             });
