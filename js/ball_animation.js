@@ -3,31 +3,40 @@ c = canvas.getContext('2d');
 
 var circles = [{
     x: 170,
-    y: 250,
+    y: 150,
     r: 100,
-    vx: 1,
-    vy: 1,
-    color: 125,
-    lifeLength: 10
+    vx: 1.5,
+    vy: 1.5,
+    color: 155,
+    lifeLength: 11
     },
     {
     x: 70,
-    y: 250,
+    y: 400,
     r: 40,
     vx: 2,
     vy: 1.7,
     color: 125,
-    lifeLength: 9
+    lifeLength: 8
     },
     {
-    x: 270,
-    y: 250,
-    r: 70,
-    vx: 1.6,
-    vy: 1.8,
-    color: 125,
-    lifeLength: 8
-    }];
+      x: 40,
+      y: 700,
+      r: 30,
+      vx: 2.4,
+      vy: 1.9,
+      color: 100,
+      lifeLength: 6
+      },
+      {
+        x: 900,
+        y: 700,
+        r: 33,
+        vx: 2.1,
+        vy: 1.8,
+        color: 155,
+        lifeLength: 7
+        }];
 
 (function() {
     
@@ -65,8 +74,7 @@ var circles = [{
         c.fillStyle = "#FFFFFF";
         c.fillRect(container.x, container.y, container.width, container.height);
 
-        var lifeTime = 5
-        //loop through the circles array
+        //loop throughj the circles array
         for (var i = 0; i < circles.length; i++) {
             //draw the circles
             c.fillStyle = 'hsl(' + circles[i].color++ + ', 100%, 50%)';
@@ -82,25 +90,32 @@ var circles = [{
             if (circles[i].y + circles[i].r + circles[i].vy > container.y + container.height || circles[i].y - circles[i].r + circles[i].vy < container.y) {
             circles[i].vy = -circles[i].vy;
             }
-            
-            //lets collide our balls dude
 
-            circles.forEach(circle => {
-                if (circles[i] !== circle) {
-                    
-                    if ((circles[i].r - circle.r)**2 <= ((circles[i].x - circle.x)**2 + (circles[i].y - circle.y)**2) <= (circles[i].r + circle.r)**2)
-                    //if (Math.abs(circles[i].r - circle.r) <= Math.sqrt((circles[i].x - circle.x)**2 + (circles[i].y - circle.y)**2) <= (circles[i].r + circle.r))
-                    //if (Math.sqrt((circles[i].x - circle.x)**2 + (circles[i].y - circle.y)**2) <= (circles[i].r + circle.r))
-                    {
-                        console.log('funka');
-                        circle.vx = -circle.vx;
-                        circles[i].vx = -circles[i].vx
-                        circle.vy = -circle.vy;
-                        circles[i].vy = -circles[i].vy
+            for (var n = 0; n < circles.length; n++) {
+                for (var k = 0; k < circles.length; k++) {
+                    if (circles[i] != circles[k]) {
+                        if (((circles[i].x - circles[k].x) ** 2 + (circles[i].y - circles[k].y) ** 2) <= (circles[i].r + circles[k].r) ** 2) {
+                          if (circles[i].vx > circles[k].vx) {
+                            circles[k].vx = -circles[k].vx;
+                          } else if (circles[k].vx > circles[i].vx) {
+                            circles[i].vx = -circles[i].vx;
+                          } else {
+                            circles[i].vx = -circles[i].vx;
+                            circles[k].vx = -circles[k].vx;
+                          }
+                          
+                          if (circles[i].vy > circles[k].vy) {
+                            circles[k].vy = -circles[k].vy;
+                          } else if (circles[k].vy > circles[i].vy) {
+                            circles[i].vy = -circles[i].vy;
+                          } else {
+                            circles[i].vy = -circles[i].vy;
+                            circles[k].vy = -circles[k].vy;
+                          }
+                      } 
                     }
                 }
-            });
-
+            }
 
             circles[i].x += circles[i].vx
             circles[i].y += circles[i].vy
@@ -116,7 +131,6 @@ var circles = [{
             if (circles[i].lifeLength <= -1) {
                 circles.splice(i, 1);
             }
-
         }
 
         requestAnimationFrame(animate);
@@ -127,8 +141,7 @@ var circles = [{
 })();
 
 function isIntersect(point, circle) {
-    console.log(Math.sqrt((point.x - circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.r);
-    return Math.sqrt((point.x - circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.r;
+    return Math.sqrt((point.x-circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.r;
   }
   
   canvas.addEventListener('click', (e) => {
@@ -139,7 +152,7 @@ function isIntersect(point, circle) {
 
     circles.forEach(circle => {
       if (isIntersect(pos, circle)) {
-          circles.splice(circles.indexOf(circle), 1);
+        circles.splice(circles.indexOf(circle), 1);
       }
     });
   });
