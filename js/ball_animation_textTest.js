@@ -49,6 +49,7 @@ for (var x=0; x<5;x++ ){
         c.fillRect(container.x, container.y, container.width, container.height);
 
         //loop throughj the circles array
+
         for (var i = 0; i < circles.length; i++) {
             //draw the circles
             c.fillStyle = 'hsl(' + circles[i].color++ + ', 100%, 50%)';
@@ -85,12 +86,12 @@ for (var x=0; x<5;x++ ){
 function addCircle(x) {
     var circle = {
         text: manyText[x],
-        x: 500 + 100 * Math.random(),
-        y: 500 + 100 * Math.random(),
+        x: 200 + 500 * Math.random(),
+        y: 200 + 500 * Math.random(),
         r: c.measureText(manyText[x]).width, //manyText[x].length*6+20, // + 10 * Math.random(),
         color: 360 * Math.random(),
-        vx: 3 * Math.random(),
-        vy: 3 * Math.random()
+        vx: 2 * Math.random(),
+        vy: 2 * Math.random()
     };
     console.log(circle.text.length+" hejhej");
     circles.push(circle);
