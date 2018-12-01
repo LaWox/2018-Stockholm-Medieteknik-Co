@@ -1,5 +1,6 @@
 var canvas = document.getElementById('my_canvas'),
 c = canvas.getContext('2d');
+c.font="20px Futura";
 
 var manyText=["Stresstålig", "Glad", "Deprimerad", "Optimistisk", "Sjuk i huvudet"];
 
@@ -56,9 +57,9 @@ for (var x=0; x<5;x++ ){
             c.fill();
 
             c.beginPath();
-            c.font="20px Futura";
             c.fillStyle='hsl(0,0%,0%)';
-            c.fillText(circles[i].text, circles[i].x-circles[i].text.length*4.5, circles[i].y+5);
+            c.font="20px Futura";
+            c.fillText(circles[i].text, circles[i].x-circles[i].r/2, circles[i].y+5);
             c.fill();
 
             //time to animate our circles ladies and gentlemen.
@@ -86,7 +87,7 @@ function addCircle(x) {
         text: manyText[x],
         x: 500 + 100 * Math.random(),
         y: 500 + 100 * Math.random(),
-        r: manyText[x].length*6+10, // + 10 * Math.random(),
+        r: c.measureText(manyText[x]).width, //manyText[x].length*6+20, // + 10 * Math.random(),
         color: 360 * Math.random(),
         vx: 3 * Math.random(),
         vy: 3 * Math.random()
