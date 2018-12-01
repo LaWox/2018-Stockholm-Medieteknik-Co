@@ -1,30 +1,13 @@
 var canvas = document.getElementById('my_canvas'),
 c = canvas.getContext('2d');
 
-var circles = [{
-    x: 170,
-    y: 250,
-    r: 100,
-    vx: 1,
-    vy: 1,
-    color: 125
-    },
-    {
-    x: 70,
-    y: 250,
-    r: 40,
-    vx: 2,
-    vy: 1.7,
-    color: 125
-    },
-    {
-    x: 270,
-    y: 250,
-    r: 70,
-    vx: 1.6,
-    vy: 1.8,
-    color: 125
-    }];
+var manyText=["Stresstålig", "Glad", "Deprimerad", "Optimistisk", "Sjuk i huvudet"];
+
+var circles = [];
+
+for (var x=0; x<5;x++ ){
+    addCircle(null);
+}
 
 (function() {
     
@@ -46,7 +29,7 @@ var circles = [{
 
     function drawStuff() {
             // do your drawing stuff here
-        console.log("Hello")
+        console.log("Hello");
         //create te container that will hold the boincing balls.
         var container = {
         x: 0,
@@ -70,6 +53,11 @@ var circles = [{
             c.arc(circles[i].x, circles[i].y, circles[i].r, 0, Math.PI * 2, true);
             c.fill()
 
+            c.beginPath()
+            c.fillStyle='hsl(0,0%,0%)';
+            c.fillText(circles[i].text, circles[i].x-10, circles[i].y);
+            c.fill();
+
             //time to animate our circles ladies and gentlemen.
             if (circles[i].x - circles[i].r + circles[i].vx < container.x || circles[i].x + circles[i].r + circles[i].vx > container.x + container.width) {
             circles[i].vx = -circles[i].vx;
@@ -89,6 +77,20 @@ var circles = [{
 
     }
 })();
+
+
+function addCircle(event) {
+    var circle = {
+        x: 500 + 100 * Math.random(),
+        y: 500 + 100 * Math.random(),
+        r: 50 + 50 * Math.random(),
+        color: 360 * Math.random(),
+        vx: 3 * Math.random(),
+        vy: 3 * Math.random(),
+        text: manyText[Math.floor(manyText.length * Math.random())],
+    };
+    circles.push(circle);
+}
 
 function isIntersect(point, circle) {
     console.log(Math.sqrt((point.x-circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.r);
