@@ -6,10 +6,13 @@ var manyText=["Stresstålig", "Glad", "Deprimerad", "Optimistisk", "Sjuk i huvud
 
 var circles = [];
 
+
 for (var x=0; x<5;x++ ){
     addCircle(x);
 
 }
+var circleSound=new sound("/Users/jussikangas/Documents/GitHub/2018-Stockholm-Medieteknik-Co/fart.wav");
+
 
 
 (function() {
@@ -97,6 +100,22 @@ function addCircle(x) {
     circles.push(circle);
 }
 
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    }
+    this.stop = function(){
+        this.sound.pause();
+    }
+}
+
+
 function isIntersect(point, circle) {
     console.log(Math.sqrt((point.x-circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.r);
     return Math.sqrt((point.x-circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.r;
@@ -110,7 +129,8 @@ function isIntersect(point, circle) {
 
     circles.forEach(circle => {
       if (isIntersect(pos, circle)) {
-        circles.splice(circle, 1);
+          circles.splice(circle, 1);
+          circleSound.play();
       }
     });
   });
