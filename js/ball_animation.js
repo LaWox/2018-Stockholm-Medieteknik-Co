@@ -1,6 +1,31 @@
 var canvas = document.getElementById('my_canvas'),
 c = canvas.getContext('2d');
 
+var circles = [{
+    x: 170,
+    y: 250,
+    r: 100,
+    vx: 1,
+    vy: 1,
+    color: 125
+    },
+    {
+    x: 70,
+    y: 250,
+    r: 40,
+    vx: 2,
+    vy: 1.7,
+    color: 125
+    },
+    {
+    x: 270,
+    y: 250,
+    r: 70,
+    vx: 1.6,
+    vy: 1.8,
+    color: 125
+    }];
+
 (function() {
     
 
@@ -30,35 +55,7 @@ c = canvas.getContext('2d');
         height: canvas.height
         };
         //create the array of circles that will be animated
-        var circles = [{
-        x: 170,
-        y: 250,
-        r: 100,
-        vx: 1,
-        vy: 1,
-        color: 125
-        }, {
-        x: 150,
-        y: 200,
-        r: 80,
-        vx: 15,
-        vy: 8,
-        color: 205
-        }, {
-        x: 90,
-        y: 150,
-        r: 50,
-        vx: 5,
-        vy: 15,
-        color: 25
-        }, {
-        x: 190,
-        y: 500,
-        r: 150,
-        vx: 8,
-        vy: 10,
-        color: 100
-        }];
+        
 
         function animate() {
         //draw the container
@@ -93,7 +90,20 @@ c = canvas.getContext('2d');
     }
 })();
 
-canvas.addEventListener('click', () => {
-    console.log('canvas click');
- });
+function isIntersect(point, circle) {
+    console.log(Math.sqrt((point.x-circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.r);
+    return Math.sqrt((point.x-circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.r;
+  }
+  
+  canvas.addEventListener('click', (e) => {
+    const pos = {
+      x: e.clientX,
+      y: e.clientY
+    };
 
+    circles.forEach(circle => {
+      if (isIntersect(pos, circle)) {
+        circles.splice(circle, 1);
+      }
+    });
+  });
