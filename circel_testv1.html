@@ -16,10 +16,6 @@
         top:20px;
         left:300px; }
 
-    #canvas{
-        position: absolute;
-    }
-
 </style>
 <head>
     <meta charset="UTF-8">
@@ -45,6 +41,7 @@
             var c = canvas.getContext("2d");
             var cancelMe = "";
             var container = {x:100,y:100,width:1200,height:800};
+            var manyText=["Stresstålig", "Glad", "Deprimerad", "Optimistisk", "Sjuk i huvudet"];
             var circles = [];
             var windowDiffX=(window.innerWidth-canvas.width)/2;
             var windowDiffY=(window.innerHeight-canvas.height)/2;
@@ -66,6 +63,10 @@
                     c.fillStyle = 'hsl(' + circles[i].color + ',100%,50%)';
                     c.beginPath();
                     c.arc(circles[i].x,circles[i].y,circles[i].r,0,2*Math.PI,false);
+                    c.fill();
+                    c.beginPath()
+                    c.fillStyle='hsl(0,0%,0%)';
+                    c.fillText(circles[i].text, circles[i].x-10, circles[i].y);
                     c.fill();
 
                     if((circles[i].x + circles[i].vx + circles[i].r > container.x + container.width) || (circles[i].x - circles[i].r + circles[i].vx < container.x)){
@@ -100,13 +101,14 @@
                     color: 360*Math.random(),
                     vx:10*Math.random(),
                     vy:10*Math.random(),
-                    insideCircle: function (xmouse,ymouse) {
+                    text:manyText[Math.floor(manyText.length*Math.random())],
+                    /*insideCircle: function (xmouse,ymouse) {
                         if(Math.sqrt((xmouse-x) ** 2 + (ymouse - y) ** 2) < r){
                             return true;
                         }
                         else{return false;}
 
-                    }
+                    } */
                 };
 
                 circles.push(circle);
