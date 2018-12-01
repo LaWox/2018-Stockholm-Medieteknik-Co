@@ -11,7 +11,8 @@ for (var x=0; x<5;x++ ){
     addCircle(x);
 
 }
-var circleSound=new sound("/Users/jussikangas/Documents/GitHub/2018-Stockholm-Medieteknik-Co/fart.wav");
+var soundString=["fart1.wav","fart2.flac","fart3.wav"];
+
 
 
 
@@ -130,6 +131,7 @@ function isIntersect(point, circle) {
     circles.forEach(circle => {
       if (isIntersect(pos, circle)) {
           circles.splice(circle, 1);
+          var circleSound=new sound(soundString[Math.floor(3*Math.random())]);
           circleSound.play();
       }
     });
