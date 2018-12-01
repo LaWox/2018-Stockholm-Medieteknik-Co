@@ -1,42 +1,18 @@
 var canvas = document.getElementById('my_canvas'),
 c = canvas.getContext('2d');
+c.font="20px Arial";
 
-var circles = [{
-    x: 170,
-    y: 150,
-    r: 100,
-    vx: 1.5,
-    vy: 1.5,
-    color: 155,
-    lifeLength: 11
-    },
-    {
-    x: 70,
-    y: 400,
-    r: 40,
-    vx: 2,
-    vy: 1.7,
-    color: 125,
-    lifeLength: 8
-    },
-    {
-      x: 40,
-      y: 700,
-      r: 30,
-      vx: 2.4,
-      vy: 1.9,
-      color: 100,
-      lifeLength: 6
-      },
-      {
-        x: 900,
-        y: 700,
-        r: 33,
-        vx: 2.1,
-        vy: 1.8,
-        color: 155,
-        lifeLength: 7
-        }];
+var manyText=["Stresstålig", "Glad", "Deprimerad", "Optimistisk", "Sjuk i huvudet"];
+
+var soundString=["fart1.wav","swosh1.flac","swosh2.mp3","swosh3.mp3","swosh2.mp3","swosh1.flac"];
+
+var circles = [];
+
+
+for (var x=0; x<5;x++ ){
+    addCircle(x);
+
+}
 
 (function() {
     
@@ -81,6 +57,12 @@ var circles = [{
             c.beginPath();
             c.arc(circles[i].x, circles[i].y, circles[i].r, 0, Math.PI * 2, true);
             c.fill()
+
+            c.beginPath();
+            c.fillStyle='hsl(0,0%,0%)';
+            c.font="20px Arial";
+            c.fillText(circles[i].text, circles[i].x-circles[i].r/2, circles[i].y+5);
+            c.fill();
 
             //time to animate our circles ladies and gentlemen.
             if (circles[i].x - circles[i].r + circles[i].vx < container.x || circles[i].x + circles[i].r + circles[i].vx > container.x + container.width) {
@@ -140,6 +122,38 @@ var circles = [{
     }
 })();
 
+function addCircle(x) {
+  var circle = {
+      text: manyText[x],
+      x: 200 + 500 * Math.random(),
+      y: 200 + 500 * Math.random(),
+      r: c.measureText(manyText[x]).width, //manyText[x].length*6+20, // + 10 * Math.random(),
+      color: 360 * Math.random(),
+      vx: 2 * Math.random(),
+      vy: 2 * Math.random(),
+      lifeLength: 6 + 4 * Math.random()
+  };
+  console.log(circle.text.length+" hejhej");
+  circles.push(circle);
+}
+
+function sound(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function(){
+      this.sound.play();
+  }
+  this.stop = function(){
+      this.sound.pause();
+  }
+}
+
+
+
 function isIntersect(point, circle) {
     return Math.sqrt((point.x-circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.r;
   }
@@ -153,6 +167,10 @@ function isIntersect(point, circle) {
     circles.forEach(circle => {
       if (isIntersect(pos, circle)) {
         circles.splice(circles.indexOf(circle), 1);
+        var circleSound=new sound(soundString[Math.floor(6*Math.random())]);
+        circleSound.play();
       }
     });
   });
+
+  
