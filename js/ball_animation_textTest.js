@@ -11,7 +11,7 @@ for (var x=0; x<5;x++ ){
     addCircle(x);
 
 }
-var soundString=["fart1.wav","fart2.flac","fart3.wav"];
+var soundString=["fart1.wav","swosh1.flac","swosh2.mp3","swosh3.mp3","swosh2.mp3","swosh1.flac"];
 
 
 
@@ -131,7 +131,7 @@ function isIntersect(point, circle) {
     circles.forEach(circle => {
       if (isIntersect(pos, circle)) {
           circles.splice(circle, 1);
-          var circleSound=new sound(soundString[Math.floor(3*Math.random())]);
+          var circleSound=new sound(soundString[Math.floor(6*Math.random())]);
           circleSound.play();
       }
     });
