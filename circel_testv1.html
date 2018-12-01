@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    #startButton{
+        position: absolute;
+        top:20px;
+        left:100px; }
+
+    #circleAddButton{
+        position: absolute;
+        top:20px;
+        left:200px; }
+
+    #circleRemoveButton{
+        position: absolute;
+        top:20px;
+        left:300px; }
+
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+
+
+</head>
+<body>
+
+
+<button id="startButton" type="button" >Start</button>
+<button id="circleAddButton" type="button" >Add</button>
+<button id="circleRemoveButton" type="button" >Remove</button>
+
+<canvas id="canvas" width="1300" height="900">c</canvas>
+
+<script>
+    (function(){
+
+        function init(){
+            var canvas = document.getElementById("canvas");
+            canvas.addEventListener("click", destroyCircle, false);
+            var c = canvas.getContext("2d");
+            var cancelMe = "";
+            var container = {x:100,y:100,width:1200,height:800};
+            var manyText=["Stresstålig", "Glad", "Deprimerad", "Optimistisk", "Sjuk i huvudet"];
+            var circles = [];
+            var windowDiffX=(window.innerWidth-canvas.width)/2;
+            var windowDiffY=(window.innerHeight-canvas.height)/2;
+            for (var x=0; x<5;x++ ){
+                addCircle(null);
+            }
+
+
+            c.fillRect(container.x,container.y,container.width,container.height);
+
+            function draw(){
+                c.fillStyle = 'black';
+                c.strokeStyle = 'black';
+                c.fillRect(container.x,container.y,container.width,container.height);
+                //c.clearRect(container.x,container.y,container.width,container.height);
+                //c.strokeRect(container.x,container.y,container.width,container.height);
+
+                for(var i=0; i <circles.length; i++){
+                    c.fillStyle = 'hsl(' + circles[i].color + ',100%,50%)';
+                    c.beginPath();
+                    c.arc(circles[i].x,circles[i].y,circles[i].r,0,2*Math.PI,false);
+                    c.fill();
+                    c.beginPath()
+                    c.fillStyle='hsl(0,0%,0%)';
+                    c.fillText(circles[i].text, circles[i].x-10, circles[i].y);
+                    c.fill();
+
+                    if((circles[i].x + circles[i].vx + circles[i].r > container.x + container.width) || (circles[i].x - circles[i].r + circles[i].vx < container.x)){
+                        circles[i].vx = - circles[i].vx;
+                    }
+                    if((circles[i].y + circles[i].vy + circles[i].r > container.y + container.height) || (circles[i].y - circles[i].r + circles[i].vy < container.y)){
+                        circles[i].vy = - circles[i].vy;
+                    }
+                    circles[i].x +=circles[i].vx;
+                    circles[i].y +=circles[i].vy;
+                }
+                cancelMe = requestAnimationFrame(draw);
+            }
+
+
+            function startAnimation(event){
+                if(this.textContent === "Start"){
+                    requestAnimationFrame(draw);
+                    this.textContent = 'Pause';
+                }
+                else{
+                    cancelAnimationFrame(cancelMe);
+                    this.textContent = 'Start';
+                }
+            }
+
+            function addCircle(event){
+                var circle = {
+                    x:500 + 100*Math.random(),
+                    y:500 + 100*Math.random(),
+                    r: 20 + 50*Math.random(),
+                    color: 360*Math.random(),
+                    vx:10*Math.random(),
+                    vy:10*Math.random(),
+                    text:manyText[Math.floor(manyText.length*Math.random())],
+                    /*insideCircle: function (xmouse,ymouse) {
+                        if(Math.sqrt((xmouse-x) ** 2 + (ymouse - y) ** 2) < r){
+                            return true;
+                        }
+                        else{return false;}
+
+                    } */
+                };
+
+                circles.push(circle);
+            }
+
+            function destroyCircle(event){
+
+                var x=event.clientX;
+                var y=event.clientY;
+                x=x-windowDiffX;
+                y=y-windowDiffY;
+                console.log(x +" "+ y);
+                console.log(windowDiffX +" "+ windowDiffY);
+            }
+            function removeCircle(){
+                circles.pop();
+            }
+
+            var startButton = document.getElementById('startButton');
+            startButton.addEventListener('click',startAnimation,false);
+
+            var circleAddButton = document.getElementById('circleAddButton');
+            circleAddButton.addEventListener('click',addCircle,false);
+
+            var circleRemoveButton = document.getElementById('circleRemoveButton');
+            circleRemoveButton.addEventListener('click',removeCircle,false);
+        }
+
+        function popCircle(obj){
+            this.x=0, this.y=0;
+
+        }
+
+//invoke function init once document is fully loaded
+        window.addEventListener('load',init,false);
+
+    }()); //self invoking function
+
+</script>
+
+</body>
+</html>
