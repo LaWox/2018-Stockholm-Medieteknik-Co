@@ -6,8 +6,10 @@ var manyText=["Stresstålig", "Glad", "Deprimerad", "Optimistisk", "Sjuk i huvud
 var circles = [];
 
 for (var x=0; x<5;x++ ){
-    addCircle(null);
+    addCircle(x);
+
 }
+
 
 (function() {
     
@@ -51,11 +53,12 @@ for (var x=0; x<5;x++ ){
             c.fillStyle = 'hsl(' + circles[i].color++ + ', 100%, 50%)';
             c.beginPath();
             c.arc(circles[i].x, circles[i].y, circles[i].r, 0, Math.PI * 2, true);
-            c.fill()
+            c.fill();
 
-            c.beginPath()
+            c.beginPath();
+            c.font="20px Futura";
             c.fillStyle='hsl(0,0%,0%)';
-            c.fillText(circles[i].text, circles[i].x-10, circles[i].y);
+            c.fillText(circles[i].text, circles[i].x-circles[i].text.length*4.5, circles[i].y+5);
             c.fill();
 
             //time to animate our circles ladies and gentlemen.
@@ -67,8 +70,8 @@ for (var x=0; x<5;x++ ){
             circles[i].vy = -circles[i].vy;
             }
 
-            circles[i].x += circles[i].vx
-            circles[i].y += circles[i].vy
+            circles[i].x += circles[i].vx;
+            circles[i].y += circles[i].vy;
         }
 
         requestAnimationFrame(animate);
@@ -78,17 +81,17 @@ for (var x=0; x<5;x++ ){
     }
 })();
 
-
-function addCircle(event) {
+function addCircle(x) {
     var circle = {
+        text: manyText[x],
         x: 500 + 100 * Math.random(),
         y: 500 + 100 * Math.random(),
-        r: 50 + 50 * Math.random(),
+        r: manyText[x].length*6+10, // + 10 * Math.random(),
         color: 360 * Math.random(),
         vx: 3 * Math.random(),
-        vy: 3 * Math.random(),
-        text: manyText[Math.floor(manyText.length * Math.random())],
+        vy: 3 * Math.random()
     };
+    console.log(circle.text.length+" hejhej");
     circles.push(circle);
 }
 
