@@ -8,7 +8,8 @@ var circles = [{
     vx: 1.5,
     vy: 1.5,
     color: 155,
-    lifeLength: 11
+    lifeLength: 11,
+    clicked: false
     },
     {
     x: 70,
@@ -17,7 +18,8 @@ var circles = [{
     vx: 2,
     vy: 1.7,
     color: 125,
-    lifeLength: 8
+    lifeLength: 8,
+    clicked: false
     },
     {
       x: 40,
@@ -26,7 +28,8 @@ var circles = [{
       vx: 2.4,
       vy: 1.9,
       color: 100,
-      lifeLength: 6
+      lifeLength: 6,
+    clicked: false
       },
       {
         x: 900,
@@ -35,7 +38,8 @@ var circles = [{
         vx: 2.1,
         vy: 1.8,
         color: 155,
-        lifeLength: 7
+        lifeLength: 7,
+        clicked: false
         }];
 
 (function() {
@@ -74,7 +78,7 @@ var circles = [{
         c.fillStyle = "#FFFFFF";
         c.fillRect(container.x, container.y, container.width, container.height);
 
-        //loop throughj the circles array
+        //loop through the circles array
         for (var i = 0; i < circles.length; i++) {
             //draw the circles
             c.fillStyle = 'hsl(' + circles[i].color++ + ', 100%, 50%)';
@@ -123,7 +127,12 @@ var circles = [{
             //time to make the circles disappear over time ladies and gentlemen
             circles[i].lifeLength -= 1 / 60
 
-
+            if (circles[i].clicked) {
+                circles[i].r = circles[i].r * 1.6;
+                if (circles[i].lifeLength < -3 / 60) {
+                    circles[i].r = circles[i].r * (1 / 1.8);
+                }
+            }
             if (circles[i].lifeLength <= 0) {
                 circles[i].r = circles[i].r * (1 / 1.5);
             }
@@ -152,7 +161,8 @@ function isIntersect(point, circle) {
 
     circles.forEach(circle => {
       if (isIntersect(pos, circle)) {
-        circles.splice(circles.indexOf(circle), 1);
+        circle.clicked = true
+        circle.lifeLength = 0;
       }
     });
   });
