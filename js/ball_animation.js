@@ -2,6 +2,47 @@ var canvas = document.getElementById('my_canvas'),
 c = canvas.getContext('2d');
 c.font="20px Arial";
 
+var circles = [{
+    x: 170,
+    y: 150,
+    r: 100,
+    vx: 1.5,
+    vy: 1.5,
+    color: 155,
+    lifeLength: 11,
+    clicked: false
+    },
+    {
+    x: 70,
+    y: 400,
+    r: 40,
+    vx: 2,
+    vy: 1.7,
+    color: 125,
+    lifeLength: 8,
+    clicked: false
+    },
+    {
+      x: 40,
+      y: 700,
+      r: 30,
+      vx: 2.4,
+      vy: 1.9,
+      color: 100,
+      lifeLength: 6,
+    clicked: false
+      },
+      {
+        x: 900,
+        y: 700,
+        r: 33,
+        vx: 2.1,
+        vy: 1.8,
+        color: 155,
+        lifeLength: 7,
+        clicked: false
+        }];
+=======
 var manyText=["Stresstålig", "Glad", "Deprimerad", "Optimistisk", "Sjuk i huvudet"];
 
 var soundString=["fart1.wav","swosh1.flac","swosh2.mp3","swosh3.mp3","swosh2.mp3","swosh1.flac"];
@@ -13,6 +54,7 @@ for (var x=0; x<5;x++ ){
     addCircle(x);
 
 }
+
 
 (function() {
     
@@ -50,7 +92,7 @@ for (var x=0; x<5;x++ ){
         c.fillStyle = "#FFFFFF";
         c.fillRect(container.x, container.y, container.width, container.height);
 
-        //loop throughj the circles array
+        //loop through the circles array
         for (var i = 0; i < circles.length; i++) {
             //draw the circles
             c.fillStyle = 'hsl(' + circles[i].color++ + ', 100%, 50%)';
@@ -105,7 +147,12 @@ for (var x=0; x<5;x++ ){
             //time to make the circles disappear over time ladies and gentlemen
             circles[i].lifeLength -= 1 / 60
 
-
+            if (circles[i].clicked) {
+                circles[i].r = circles[i].r * 1.6;
+                if (circles[i].lifeLength < -3 / 60) {
+                    circles[i].r = circles[i].r * (1 / 1.8);
+                }
+            }
             if (circles[i].lifeLength <= 0) {
                 circles[i].r = circles[i].r * (1 / 1.5);
             }
@@ -166,6 +213,8 @@ function isIntersect(point, circle) {
 
     circles.forEach(circle => {
       if (isIntersect(pos, circle)) {
+        circle.clicked = true
+        circle.lifeLength = 0;
         circles.splice(circles.indexOf(circle), 1);
         var circleSound=new sound(soundString[Math.floor(6*Math.random())]);
         circleSound.play();
